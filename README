@@ -1,0 +1,36 @@
+TEMA 1 - DATAPLANE ROUTER - POPA NICOLAE
+
+*IPV4*
+
+    Pentru implementarea protocolului IPV4 am urmat algoritmul descris
+pe care l-am rezolvat in cadrul laboratorului 4 + functia get_mac_entry.
+    Deci, am verificat tipul pachetului (in cazul meu doar IP, pentru ca
+nu am implementat ARP) si am verificat daca acesta are ca destinatie router-ul.
+In caz afirmativ, am gestionat trimiterea pachetelor ICMP catre sursa.
+    Dupa, conform algoritmului am calculat checksum-ul, verificat ttl-ul,
+am luat adresa mac a urmatorului "hop" si am actualizat headerul ethernet.
+    Intr-un final, trimitem pachetul :D
+
+
+*Best Route neliniar*
+
+    Pentru a implementa functia de best_route eficient am sortat mai intai
+tabela de rutare descrescator. Dupa am folosit un binary search.
+    Daca se gaseste o potrivire verificam daca aceasta este singura. Daca nu,
+incepem cautarea in partea stanga a tabelei pentru a gasi eventual o potrivire
+mai exacta.
+
+*ICMP*
+
+    Pentru acest protocol am implementat doua functii:
+
+    -> send_icmp_error - pentru a trimite raspuns la sursa in caz ca avem erori
+de tipul time exceeded sau no best match found.
+    -> send_icmp_reply - functie care trimite pachete de tipul echo reply
+
+    Pentru functia send_icmp_error se completeaza header-ele IP, ETHERNET, ICMP, 
+pe care le adauga intr-un nou buffer pe care il trimite la sursa.
+    
+    Functia send_icmp_reply completeaza headerele IP (inverseaza adresele
+sursa/destinatie) si ICMP si trimite pachetul de tip echo reply.
+
